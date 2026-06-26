@@ -1,0 +1,5 @@
+phosfox-site-complete-v9
+Expected hero: Hi, I’m Alex.
+Expected brand: Phosfox
+Expected theme toggle: Dark | Light
+Password Lab heading has added space before its first paragraph.

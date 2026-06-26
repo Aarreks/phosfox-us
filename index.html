@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Alex Giang — UCLA Computer Science. Projects in security, deployment infrastructure, machine learning, and algorithmic software.">
+  <meta property="og:title" content="Alex Giang / Phosfox">
+  <meta property="og:description" content="Extended resume, project notes, and a compact password generator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phosfox.us/">
+  <meta name="theme-color" content="#15100d">
+  <title>Alex Giang / Phosfox</title>
+  <link rel="icon" href="assets/favicon.svg?v=9" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css?v=9">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Alex Giang home">
+      <svg class="dice-icon" viewBox="0 0 64 64" role="img" aria-label="Orange five-pip die">
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="currentColor"/>
+  <circle cx="19" cy="19" r="4.6" fill="#17100d"/>
+  <circle cx="45" cy="19" r="4.6" fill="#17100d"/>
+  <circle cx="32" cy="32" r="4.6" fill="#17100d"/>
+  <circle cx="19" cy="45" r="4.6" fill="#17100d"/>
+  <circle cx="45" cy="45" r="4.6" fill="#17100d"/>
+</svg>
+      <span>Phosfox</span>
+    </a>
+
+    <div class="header-controls">
+      <nav aria-label="Primary navigation">
+        <a href="#work">Work</a>
+        <a href="#notes">Notes</a>
+        <a href="#password-lab">Password lab</a>
+      </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch visual theme">
+        <span class="theme-toggle-corp">Dark</span>
+        <span class="theme-toggle-cf">Light</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Alex Giang · UCLA Computer Science</p>
+        <h1>Hi, I’m Alex.</h1>
+        <p class="hero-intro">
+          I study computer science at UCLA and build projects around security,
+          web systems, deployment infrastructure, and machine learning evaluation.
+        </p>
+        <p class="hero-intro hero-intro-secondary">
+          Recent work includes <a href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">llm-password</a>,
+          a pattern-aware password-estimation experiment; <a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a>,
+          a deployed full-stack PWA; and <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a>,
+          a real-time multiplayer arithmetic game.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#work">Projects</a>
+          <a class="button button-quiet" href="#notes">Experience &amp; credentials</a>
+          <a class="button button-quiet" href="#password-lab">Password lab</a>
+        </div>
+      </div>
+
+      <aside class="signal-card" aria-label="Quick profile">
+        <div class="signal-topline">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Quick links</span>
+        </div>
+        <dl>
+          <div>
+            <dt>Credential</dt>
+            <dd>AWS Certified Solutions Architect – Associate</dd>
+          </div>
+          <div>
+            <dt>Competitive programming</dt>
+            <dd><a href="https://codeforces.com/profile/Phosfox" rel="noopener noreferrer" target="_blank">Phosfox on Codeforces</a></dd>
+          </div>
+          <div>
+            <dt>Live projects</dt>
+            <dd><a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a> · <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a></dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+
+<section class="section" id="work">
+      <div class="section-heading">
+        <p class="eyebrow">Selected work</p>
+        <h2>Projects</h2>
+        <p class="section-intro">
+          Short project summaries, with the implementation decisions and project context
+          that do not fit on a resume.
+        </p>
+      </div>
+
+      <article class="project project-featured">
+        <div class="project-index">01</div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">ECE 202C · security research prototype</p>
+              <h3>llm-password: pattern-aware password estimation</h3>
+            </div>
+            <a class="project-link" href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">View repository <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <p class="project-summary">
+            A local experimental evaluator for passwords whose visible complexity can
+            overstate how predictable they are. The question was not whether a string
+            looks random to a meter; it was whether an attacker with ordinary cultural
+            knowledge and pattern completion could reach it quickly.
+          </p>
+
+          <div class="project-grid">
+            <div>
+              <h4>What I built</h4>
+              <p>
+                A staged pipeline combining a patched zxcvbn baseline, a cheap
+                structural-pattern check, and continuation-probability estimates from
+                local language models. The expensive stages are routed only to inputs
+                where the cheap baseline leaves material uncertainty.
+              </p>
+            </div>
+            <div>
+              <h4>What was technically interesting</h4>
+              <p>
+                The continuation estimator uses dynamic programming over token-level
+                alternatives rather than asking a model for one vague strength score.
+                That made it possible to compare structured sequences against a
+                reproducible probability estimate.
+              </p>
+            </div>
+            <div>
+              <h4>One result worth showing</h4>
+              <p>
+                A long numeric sequence scored around <code>10^23.57</code> guesses
+                under the zxcvbn baseline, while a continuation estimate assigned it
+                roughly <code>10^3.34</code>. The point is not that the second number is
+                a universal cracking forecast; it is that obvious construction rules can
+                survive a length-based strength meter.
+              </p>
+            </div>
+          </div>
+
+          <details>
+            <summary>Method and limits</summary>
+            <div class="details-copy">
+              <p>
+                llm-password is an experiment in password-pattern estimation, not a claim
+                that a small language model can simulate every real attacker. It is
+                useful where conventional matching misses a human-generated sequence,
+                phrase, cultural association, or rule. It does not replace breach
+                checks, rate limits, MFA, or proper password storage.
+              </p>
+              <p>
+                The project was deliberately built around local inference and
+                inspectable stages. The goal was to avoid sending password-derived text
+                to an unrelated service merely to receive a score.
+              </p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="project-index">02</div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">Team web application · live deployment</p>
+              <h3>AlmostBear</h3>
+            </div>
+            <a class="project-link" href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">Visit almostbear.uk <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <p class="project-summary">
+            A location-aware recommendation PWA built with React/TypeScript,
+            Node/Express, and PostgreSQL. It includes recommendation history,
+            Leaflet-based geolocation, offline caching with queued writes,
+            server-sent notifications, and a Gemini fallback. The application also
+            uses password-strength checks at account-setting points.
+          </p>
+
+          <div class="project-grid">
+            <div>
+              <h4>My scope</h4>
+              <p>
+                I focused on containerization, runtime debugging, Kubernetes
+                configuration, HTTPS/domain setup, and the CI/CD path. The
+                recommendation UI, login behavior, PWA interaction design, and
+                application features were team work with separate owners.
+              </p>
+            </div>
+            <div>
+              <h4>Deployment architecture</h4>
+              <p>
+                Two application replicas run on Google Kubernetes Engine behind HTTPS
+                ingress. PostgreSQL runs as a stateful workload. Health probes,
+                resource limits, secure cookies, and a managed certificate are part of
+                the deployed configuration rather than a diagram-only plan.
+              </p>
+            </div>
+            <div>
+              <h4>Release path</h4>
+              <p>
+                GitHub Actions builds and tests the image, pushes it to Artifact
+                Registry, and deploys it to GKE. I also demonstrated pod replacement,
+                rollout status, and manual scaling from one replica back to two.
+              </p>
+            </div>
+          </div>
+
+          <details>
+            <summary>What broke first</summary>
+            <div class="details-copy">
+              <p>
+                The deployment work included ordinary failure modes that are easy to
+                skip in a class demo: a PostgreSQL volume-path issue caused by
+                <code>lost+found</code>, an application-to-database connection failure,
+                certificate visibility/DNS delays, and container/runtime differences
+                between local WSL development and the deployed environment.
+              </p>
+              <p>
+                The final system was useful because it was deployed and observable,
+                not because every infrastructure component was individually exotic.
+              </p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="project">
+        <div class="project-index">03</div>
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">Real-time browser game · Fly.io</p>
+              <h3>Operand</h3>
+            </div>
+            <a class="project-link" href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Visit operand.uk <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <p class="project-summary">
+            A two-player, timed arithmetic race with shared invite-link rooms. Players
+            solve arithmetic rounds over 120 seconds; a weighted wheel changes the
+            round state based on who is leading, so the game has pressure and comeback
+            opportunities instead of being a pure speed contest.
+          </p>
+
+          <div class="project-grid">
+            <div>
+              <h4>Why it exists</h4>
+              <p>
+                I wanted a mental-math game that remained interesting after one player
+                gets ahead. The wheel mechanic creates a risk/reward event rather than
+                just adding harder arithmetic.
+              </p>
+            </div>
+            <div>
+              <h4>Live-system part</h4>
+              <p>
+                The meaningful unit is a room with two players, a shared timer, shared
+                state, and an invite path that another person can actually use. The
+                application is deployed on Fly.io.
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <section class="section section-notes" id="notes">
+      <div class="section-heading">
+        <p class="eyebrow">Experience and credentials</p>
+        <h2>Other work</h2>
+      </div>
+
+      <div class="resume-grid">
+        <article class="resume-card">
+          <p class="card-label">Scale AI</p>
+          <h3>Machine Learning Intern</h3>
+          <p>
+            Evaluated model outputs and reviewed mathematical reasoning,
+            programming solutions, and training-task quality. I moved from
+            contributor to trusted reviewer across three projects: open-form
+            math writing, AIME-specific math writing, and competitive-programming
+            solution review involving AtCoder/Codeforces-style problems.
+          </p>
+          <p class="minor-note">Employee of the Month · December 2025</p>
+        </article>
+
+        <article class="resume-card">
+          <p class="card-label">Credential</p>
+          <h3>AWS Certified Solutions Architect – Associate</h3>
+          <p>
+            The certification is useful context for how I think about deployment
+            choices, but the project pages are the stronger evidence: containers,
+            managed services, networking, persistence, health checks, TLS, and
+            operational failure modes.
+          </p>
+        </article>
+
+        <article class="resume-card">
+          <p class="card-label">Competitive programming</p>
+          <h3>Algorithmic problem solving</h3>
+          <p>
+            I qualified through the UCLA ICPC tryout and use competitive programming
+            as a way to keep proof, implementation, edge cases, and time complexity in
+            the same mental loop. My public handle is <a href="https://codeforces.com/profile/Phosfox" rel="noopener noreferrer" target="_blank">Phosfox</a>.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="password-lab" id="password-lab">
+      <div class="password-copy">
+        <p class="eyebrow">Password lab</p>
+        <h2>How would I get through my own password checkers?</h2>
+        <p>
+          The generator below chooses four short, familiar chunks independently, then
+          attaches three random digits using one of several punctuation styles. The
+          result is meant to be easy to rehearse as a strange little sequence, not a
+          sentence.
+        </p>
+        <p>
+          It runs entirely in your browser. Nothing you generate is sent to this site.
+          The format is designed for manual entry on ordinary accounts; use a
+          password-manager-generated password for your password manager, primary email,
+          financial accounts, cloud root/admin accounts, and other high-consequence logins.
+        </p>
+
+        <div class="lab-facts">
+          <div><span class="fact-number">4</span><span>independent word chunks</span></div>
+          <div><span class="fact-number">10</span><span>number attachment styles</span></div>
+          <div><span class="fact-number">~47</span><span>nominal selection bits</span></div>
+        </div>
+      </div>
+
+      <div class="generator-card" aria-label="Password generator">
+        <label class="generator-label" for="generated-password">Generated password</label>
+        <output id="generated-password" class="generated-password" aria-live="polite">Generating…</output>
+
+        <div id="practice-line" class="practice-line" aria-live="polite"></div>
+
+        <div class="generator-actions">
+          <button class="button button-primary" id="generate-button" type="button">Generate another</button>
+          <button class="button button-quiet" id="copy-button" type="button">Copy</button>
+        </div>
+
+        <p class="generator-note">
+          Practice view shows the chunk boundaries. In the copied password, the word
+          chunks are joined directly; the number attachment may include punctuation.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <svg class="dice-icon" viewBox="0 0 64 64" role="img" aria-label="Orange five-pip die">
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="currentColor"/>
+  <circle cx="19" cy="19" r="4.6" fill="#17100d"/>
+  <circle cx="45" cy="19" r="4.6" fill="#17100d"/>
+  <circle cx="32" cy="32" r="4.6" fill="#17100d"/>
+  <circle cx="19" cy="45" r="4.6" fill="#17100d"/>
+  <circle cx="45" cy="45" r="4.6" fill="#17100d"/>
+</svg>
+      <strong>Phosfox</strong><span class="footer-domain"> · phosfox.us</span>
+      <span class="footer-muted">— Alex Giang’s extended resume and project notes.</span>
+    </div>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <script src="assets/site.js?v=9"></script>
+</body>
+</html>
