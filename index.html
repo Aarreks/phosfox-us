@@ -3,20 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Alex Giang — UCLA Computer Science. Projects in security, deployment infrastructure, machine learning, and algorithmic software.">
+  <meta name="description" content="Alex Giang, UCLA Computer Science. Projects in password security, web systems, deployment infrastructure, and machine learning evaluation.">
   <meta property="og:title" content="Alex Giang / Phosfox">
-  <meta property="og:description" content="Extended resume, project notes, and a compact password generator.">
+  <meta property="og:description" content="Project notes on password security, web systems, deployment work, and a few things I built for fun.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://phosfox.us/">
   <meta name="theme-color" content="#15100d">
   <title>Alex Giang / Phosfox</title>
-  <link rel="icon" href="assets/favicon.svg?v=9" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/site.css?v=9">
+  <link rel="icon" href="assets/favicon.svg?v=13" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css?v=13">
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+  <div class="page-texture" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
+  <header class="site-header" data-site-header>
     <a class="wordmark" href="#top" aria-label="Alex Giang home">
       <svg class="dice-icon" viewBox="0 0 64 64" role="img" aria-label="Orange five-pip die">
   <rect x="4" y="4" width="56" height="56" rx="10" fill="currentColor"/>
@@ -45,17 +47,19 @@
   <main id="main">
     <section class="hero" id="top">
       <div class="hero-copy">
-        <p class="eyebrow">Alex Giang · UCLA Computer Science</p>
-        <h1>Hi, I’m Alex.</h1>
+        <p class="identity-line">Alex Giang · UCLA Computer Science</p>
+        <h1><span class="hero-greeting">Hi, I’m</span><span class="hero-name">Alex.</span></h1>
         <p class="hero-intro">
-          I study computer science at UCLA and build projects around security,
+          I study computer science at UCLA, especially security, 
           web systems, deployment infrastructure, and machine learning evaluation.
         </p>
         <p class="hero-intro hero-intro-secondary">
-          Recent work includes <a href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">llm-password</a>,
-          a pattern-aware password-estimation experiment; <a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a>,
-          a deployed full-stack PWA; and <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a>,
-          a real-time multiplayer arithmetic game.
+          Recent projects include <a href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">llm-password</a>,
+          a local audit for password patterns that ordinary meters miss, and
+          <a href="https://github.com/Aarreks/asdf-fox" rel="noopener noreferrer" target="_blank">asdf-fox</a>,
+          a lightweight browser-first audit built on zxcvbn-ts. I first deployed
+          <a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a> on GKE and later brought it back on Render and Neon.
+          <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a> is a real-time multiplayer arithmetic game.
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="#work">Projects</a>
@@ -65,11 +69,21 @@
       </div>
 
       <aside class="signal-card" aria-label="Quick profile">
-        <div class="signal-topline">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span>Quick links</span>
-        </div>
-        <dl>
+        <button class="pattern-stage" id="pattern-stage" type="button" aria-label="Animate the abstract pattern">
+          <canvas id="pattern-canvas" aria-hidden="true"></canvas>
+          <span class="pattern-glaze" aria-hidden="true"></span>
+          <span class="pattern-die" aria-hidden="true">
+            <svg class="dice-icon" viewBox="0 0 64 64">
+              <rect x="4" y="4" width="56" height="56" rx="10" fill="currentColor"/>
+              <circle cx="19" cy="19" r="4.6"/>
+              <circle cx="45" cy="19" r="4.6"/>
+              <circle cx="32" cy="32" r="4.6"/>
+              <circle cx="19" cy="45" r="4.6"/>
+              <circle cx="45" cy="45" r="4.6"/>
+            </svg>
+          </span>
+        </button>
+        <dl class="profile-list">
           <div>
             <dt>Credential</dt>
             <dd>AWS Certified Solutions Architect – Associate</dd>
@@ -88,49 +102,46 @@
 
 <section class="section" id="work">
       <div class="section-heading">
-        <p class="eyebrow">Selected work</p>
         <h2>Projects</h2>
         <p class="section-intro">
-          Short project summaries, with the implementation decisions and project context
-          that do not fit on a resume.
+          Notes on how these projects were built, including the decisions and failure modes
+          that rarely fit on a one-page resume.
         </p>
       </div>
 
-      <article class="project project-featured">
-        <div class="project-index">01</div>
+      <article class="project project-featured texture-wave" data-project="semantic-security">
         <div class="project-body">
           <div class="project-title-row">
             <div>
-              <p class="project-kicker">ECE 202C · security research prototype</p>
-              <h3>llm-password: pattern-aware password estimation</h3>
+              <p class="project-kicker">ECE 202C · local semantic security research</p>
+              <h3>llm-password: semantic password audit</h3>
             </div>
             <a class="project-link" href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">View repository <span aria-hidden="true">↗</span></a>
           </div>
 
           <p class="project-summary">
-            A local experimental evaluator for passwords whose visible complexity can
-            overstate how predictable they are. The question was not whether a string
-            looks random to a meter; it was whether an attacker with ordinary cultural
-            knowledge and pattern completion could reach it quickly.
+            A local experiment for passwords that look complex while still following an
+            obvious human rule. Rather than stopping at surface patterns, it asks whether
+            ordinary cultural knowledge or pattern completion makes the string easy to
+            continue or reconstruct.
           </p>
 
           <div class="project-grid">
             <div>
               <h4>What I built</h4>
               <p>
-                A staged pipeline combining a patched zxcvbn baseline, a cheap
-                structural-pattern check, and continuation-probability estimates from
-                local language models. The expensive stages are routed only to inputs
-                where the cheap baseline leaves material uncertainty.
+                I combined a patched zxcvbn baseline, a cheap structural check, and
+                continuation-probability estimates from local language models. The more
+                expensive stages run only when the earlier checks leave a meaningful gap.
               </p>
             </div>
             <div>
-              <h4>What was technically interesting</h4>
+              <h4>Why it is a semantic audit</h4>
               <p>
-                The continuation estimator uses dynamic programming over token-level
-                alternatives rather than asking a model for one vague strength score.
-                That made it possible to compare structured sequences against a
-                reproducible probability estimate.
+                Instead of asking a model for one opaque strength score, the estimator
+                uses token-level dynamic programming over plausible continuations. That
+                makes it useful for phrases, associations, and construction rules that a
+                conventional pattern matcher may never name.
               </p>
             </div>
             <div>
@@ -138,9 +149,8 @@
               <p>
                 A long numeric sequence scored around <code>10^23.57</code> guesses
                 under the zxcvbn baseline, while a continuation estimate assigned it
-                roughly <code>10^3.34</code>. The point is not that the second number is
-                a universal cracking forecast; it is that obvious construction rules can
-                survive a length-based strength meter.
+                roughly <code>10^3.34</code>. That contrast shows how an obvious human
+                rule can survive a length-based meter.
               </p>
             </div>
           </div>
@@ -149,28 +159,95 @@
             <summary>Method and limits</summary>
             <div class="details-copy">
               <p>
-                llm-password is an experiment in password-pattern estimation, not a claim
-                that a small language model can simulate every real attacker. It is
-                useful where conventional matching misses a human-generated sequence,
-                phrase, cultural association, or rule. It does not replace breach
-                checks, rate limits, MFA, or proper password storage.
+                A small language model is not a complete attacker model. I treat this as
+                a second opinion for human-generated sequences, phrases, associations,
+                and rules that surface matching misses. It does not replace breach checks,
+                rate limits, MFA, or proper password storage.
               </p>
               <p>
-                The project was deliberately built around local inference and
-                inspectable stages. The goal was to avoid sending password-derived text
-                to an unrelated service merely to receive a score.
+                The whole pipeline runs locally and exposes its stages, so password-derived
+                text does not have to be sent to an unrelated scoring service.
               </p>
             </div>
           </details>
         </div>
       </article>
 
-      <article class="project">
-        <div class="project-index">02</div>
+      <article class="project texture-grid">
         <div class="project-body">
           <div class="project-title-row">
             <div>
-              <p class="project-kicker">Team web application · live deployment</p>
+              <p class="project-kicker">Browser-first npm package · password security</p>
+              <h3>asdf-fox: low-cost password audit</h3>
+            </div>
+            <a class="project-link" href="https://aarreks.github.io/asdf-fox/" rel="noopener noreferrer" target="_blank">Try the live demo <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <p class="project-summary">
+            <a href="https://www.npmjs.com/package/asdf-fox" rel="noopener noreferrer" target="_blank">asdf-fox</a>
+            is the lightweight counterpart to llm-password. It starts with zxcvbn-ts and
+            applies named, deterministic corrections when a familiar construction is
+            mistaken for generic brute-force text. It is designed for fast, inspectable
+            feedback in browser and npm integrations, without a language-model runtime.
+          </p>
+
+          <div class="project-grid">
+            <div>
+              <h4>What it adds</h4>
+              <p>
+                I targeted a few concrete zxcvbn gaps: long arithmetic number runs,
+                truncated repeats, and simple character streams interleaved with one
+                another. The package also extends local word and name coverage with current
+                terms that the base dictionaries may not recognize. Each rule is reported
+                as evidence instead of disappearing into an unexplained replacement score.
+              </p>
+            </div>
+            <div>
+              <h4>Parsing repairs</h4>
+              <p>
+                A bounded span that zxcvbn-ts treated as generic text can be rechecked
+                locally for a lower-cost known-word parse. A separate exact lookup catches
+                frequent directional word pairs, with a capped discount that retains the
+                direction and separator costs. Those passes address cases where the pieces
+                are individually visible, but the baseline parse still misses their relation.
+              </p>
+            </div>
+            <div>
+              <h4>Bounded breach checks</h4>
+              <p>
+                Results keep the baseline and adjusted <code>log10</code> estimates,
+                matched structures, and an A–F grade, where A means acceptable rather
+                than exceptional. The optional Pwned Passwords check performs the SHA-1
+                range query from the browser and can warn about a few easy breached
+                variants, not only an exact full-password match.
+              </p>
+            </div>
+          </div>
+
+          <details>
+            <summary>Why this remains distinct from llm-password</summary>
+            <div class="details-copy">
+              <p>
+                asdf-fox stays within inexpensive, testable rules that can be reproduced
+                in a browser or npm integration. llm-password handles the harder cases,
+                where cultural knowledge or continuation reasoning matters but no small
+                deterministic rule explains the weakness well.
+              </p>
+              <p>
+                <a href="https://github.com/Aarreks/asdf-fox" rel="noopener noreferrer" target="_blank">Read the source on GitHub</a>
+                ·
+                <a href="https://www.npmjs.com/package/asdf-fox" rel="noopener noreferrer" target="_blank">view the npm package</a>
+              </p>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <article class="project texture-rings">
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">Team web application · GKE → Render + Neon</p>
               <h3>AlmostBear</h3>
             </div>
             <a class="project-link" href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">Visit almostbear.uk <span aria-hidden="true">↗</span></a>
@@ -178,62 +255,66 @@
 
           <p class="project-summary">
             A location-aware recommendation PWA built with React/TypeScript,
-            Node/Express, and PostgreSQL. It includes recommendation history,
-            Leaflet-based geolocation, offline caching with queued writes,
-            server-sent notifications, and a Gemini fallback. The application also
-            uses password-strength checks at account-setting points.
+            Node/Express, and PostgreSQL. The course version ran on Google Kubernetes
+            Engine; after that deployment was archived, I revived the application with
+            the web service on Render and PostgreSQL on Neon. The product includes
+            recommendation history, Leaflet geolocation, offline caching with queued
+            writes, server-sent notifications, and a Gemini fallback.
           </p>
 
           <div class="project-grid">
             <div>
               <h4>My scope</h4>
               <p>
-                I focused on containerization, runtime debugging, Kubernetes
-                configuration, HTTPS/domain setup, and the CI/CD path. The
-                recommendation UI, login behavior, PWA interaction design, and
-                application features were team work with separate owners.
+                I handled most of the deployment work: containerization, runtime debugging,
+                Kubernetes configuration, DNS/HTTPS, and the CI/CD path. When I brought the
+                site back later, I moved the application to Render and the database to Neon.
+                The recommendation UI, login flow, and most product features were shared
+                team work with separate owners.
               </p>
             </div>
             <div>
-              <h4>Deployment architecture</h4>
+              <h4>Original GKE deployment</h4>
               <p>
-                Two application replicas run on Google Kubernetes Engine behind HTTPS
-                ingress. PostgreSQL runs as a stateful workload. Health probes,
-                resource limits, secure cookies, and a managed certificate are part of
-                the deployed configuration rather than a diagram-only plan.
+                For the course, two application replicas ran on Google Kubernetes Engine
+                behind HTTPS ingress, with PostgreSQL as a stateful workload. Health probes,
+                resource limits, secure cookies, and a managed certificate were all part of
+                the working deployment rather than a diagram-only plan.
               </p>
             </div>
             <div>
-              <h4>Release path</h4>
+              <h4>Current home</h4>
               <p>
-                GitHub Actions builds and tests the image, pushes it to Artifact
-                Registry, and deploys it to GKE. I also demonstrated pod replacement,
-                rollout status, and manual scaling from one replica back to two.
+                Keeping a Kubernetes cluster alive for a portfolio demo stopped making
+                sense once the course credits ended. The current version uses Render for
+                the application and Neon for PostgreSQL, which keeps the project available
+                at the same domain with much less infrastructure to maintain.
               </p>
             </div>
           </div>
 
           <details>
-            <summary>What broke first</summary>
+            <summary>What changed between deployments</summary>
             <div class="details-copy">
               <p>
-                The deployment work included ordinary failure modes that are easy to
-                skip in a class demo: a PostgreSQL volume-path issue caused by
+                The original rollout hit the kinds of problems that disappear from a
+                polished architecture diagram: a PostgreSQL volume-path issue involving
                 <code>lost+found</code>, an application-to-database connection failure,
-                certificate visibility/DNS delays, and container/runtime differences
-                between local WSL development and the deployed environment.
+                certificate and DNS delays, and differences between local WSL development
+                and the deployed containers.
               </p>
               <p>
-                The final system was useful because it was deployed and observable,
-                not because every infrastructure component was individually exotic.
+                I eventually archived the GKE version rather than pay to keep a small
+                cluster running for a class project. Reviving it on Render and Neon was a
+                different kind of deployment decision: less infrastructure, lower cost,
+                and a live project I can still maintain.
               </p>
             </div>
           </details>
         </div>
       </article>
 
-      <article class="project">
-        <div class="project-index">03</div>
+      <article class="project texture-noise">
         <div class="project-body">
           <div class="project-title-row">
             <div>
@@ -244,10 +325,9 @@
           </div>
 
           <p class="project-summary">
-            A two-player, timed arithmetic race with shared invite-link rooms. Players
-            solve arithmetic rounds over 120 seconds; a weighted wheel changes the
-            round state based on who is leading, so the game has pressure and comeback
-            opportunities instead of being a pure speed contest.
+            A two-player arithmetic race built around shared invite-link rooms. Each match
+            lasts 120 seconds, and a weighted wheel changes the round based on who is ahead.
+            The result has more pressure and more room for a comeback than a plain speed test.
           </p>
 
           <div class="project-grid">
@@ -262,9 +342,8 @@
             <div>
               <h4>Live-system part</h4>
               <p>
-                The meaningful unit is a room with two players, a shared timer, shared
-                state, and an invite path that another person can actually use. The
-                application is deployed on Fly.io.
+                Each room has two players, one timer, shared state, and an invite link that
+                another person can actually open and use. The application is deployed on Fly.io.
               </p>
             </div>
           </div>
@@ -275,14 +354,13 @@
 
     <section class="section section-notes" id="notes">
       <div class="section-heading">
-        <p class="eyebrow">Experience and credentials</p>
-        <h2>Other work</h2>
+        <h2>Experience and credentials</h2>
       </div>
 
       <div class="resume-grid">
         <article class="resume-card">
           <p class="card-label">Scale AI</p>
-          <h3>Machine Learning Intern</h3>
+          <h3>Technical Advisor Intern</h3>
           <p>
             Evaluated model outputs and reviewed mathematical reasoning,
             programming solutions, and training-task quality. I moved from
@@ -297,10 +375,9 @@
           <p class="card-label">Credential</p>
           <h3>AWS Certified Solutions Architect – Associate</h3>
           <p>
-            The certification is useful context for how I think about deployment
-            choices, but the project pages are the stronger evidence: containers,
-            managed services, networking, persistence, health checks, TLS, and
-            operational failure modes.
+            The certification gave me a useful framework for deployment decisions. The
+            projects above are where I applied it: containers, managed services, networking,
+            persistence, health checks, TLS, and the failure modes that appear after launch.
           </p>
         </article>
 
@@ -308,9 +385,9 @@
           <p class="card-label">Competitive programming</p>
           <h3>Algorithmic problem solving</h3>
           <p>
-            I qualified through the UCLA ICPC tryout and use competitive programming
-            as a way to keep proof, implementation, edge cases, and time complexity in
-            the same mental loop. My public handle is <a href="https://codeforces.com/profile/Phosfox" rel="noopener noreferrer" target="_blank">Phosfox</a>.
+            I qualified through the UCLA ICPC tryout and use contests to practice moving
+            from a proof idea to a correct implementation under time pressure. My public
+            handle is <a href="https://codeforces.com/profile/Phosfox" rel="noopener noreferrer" target="_blank">Phosfox</a>.
           </p>
         </article>
       </div>
@@ -318,19 +395,16 @@
 
     <section class="password-lab" id="password-lab">
       <div class="password-copy">
-        <p class="eyebrow">Password lab</p>
         <h2>How would I get through my own password checkers?</h2>
         <p>
-          The generator below chooses four short, familiar chunks independently, then
-          attaches three random digits using one of several punctuation styles. The
-          result is meant to be easy to rehearse as a strange little sequence, not a
-          sentence.
+          The generator below picks four short, familiar chunks independently, then adds
+          three random digits in one of several punctuation patterns. The result is meant
+          to be rehearsed as a strange little sequence rather than remembered as a sentence.
         </p>
         <p>
           It runs entirely in your browser. Nothing you generate is sent to this site.
-          The format is designed for manual entry on ordinary accounts; use a
-          password-manager-generated password for your password manager, primary email,
-          financial accounts, cloud root/admin accounts, and other high-consequence logins.
+          The format is designed for accounts where you want a manually entered password
+          you can rehearse.
         </p>
 
         <div class="lab-facts">
@@ -360,7 +434,7 @@
   </main>
 
   <footer class="site-footer">
-    <div>
+    <div class="footer-brand">
       <svg class="dice-icon" viewBox="0 0 64 64" role="img" aria-label="Orange five-pip die">
   <rect x="4" y="4" width="56" height="56" rx="10" fill="currentColor"/>
   <circle cx="19" cy="19" r="4.6" fill="#17100d"/>
@@ -370,11 +444,13 @@
   <circle cx="45" cy="45" r="4.6" fill="#17100d"/>
 </svg>
       <strong>Phosfox</strong><span class="footer-domain"> · phosfox.us</span>
-      <span class="footer-muted">— Alex Giang’s extended resume and project notes.</span>
+      <span class="footer-muted">Alex Giang’s extended resume and project notes.</span>
     </div>
-    <a href="#top">Back to top ↑</a>
+    <div class="footer-actions">
+      <a href="#top">Back to top ↑</a>
+    </div>
   </footer>
 
-  <script src="assets/site.js?v=9"></script>
+  <script src="assets/site.js?v=13"></script>
 </body>
 </html>
