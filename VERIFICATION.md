@@ -5,12 +5,9 @@ of the existing projects, links their code and verification evidence, and adds
 Operand's room lifecycle evidence. Hero copy and the live-project list include
 Keywulf. Existing assets, layout, themes and password generator are reused.
 
-No service has been deployed by this change. Backend reliability work is on
-separate review branches in `keywulf` and `operand`; their evidence links use those
-branches so reviewers can inspect the proposed code before deployment. Keep the
-branches available while those links are used, or change them to main after
-merging the backend PRs. The portfolio does not assert that the new recovery code
-is already running in production or that loopback latency measures internet latency.
+This portfolio change has not been published. Backend reliability work has been
+merged separately in `keywulf` and `operand`; evidence links point to their main
+branches. The portfolio does not claim loopback latency measures internet latency.
 
 ## Local review
 
