@@ -54,8 +54,11 @@
           web systems, deployment infrastructure, and machine learning evaluation.
         </p>
         <p class="hero-intro hero-intro-secondary">
-          Recent projects include <a href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">llm-password</a>,
-          a local audit for password patterns that ordinary meters miss, and
+          Recent projects include <a href="https://keywulf.com/" rel="noopener noreferrer" target="_blank">Keywulf</a>,
+          a daily typing game built from fresh news, and
+          <a href="https://github.com/Aarreks/agent-effi" rel="noopener noreferrer" target="_blank">EffiGov Voice Desk</a>,
+          a voice intake and staff case-management demo. My security work includes
+          <a href="https://github.com/Aarreks/llm-password" rel="noopener noreferrer" target="_blank">llm-password</a> and
           <a href="https://github.com/Aarreks/asdf-fox" rel="noopener noreferrer" target="_blank">asdf-fox</a>,
           a lightweight browser-first audit built on zxcvbn-ts. I first deployed
           <a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a> on GKE and later brought it back on Render and Neon.
@@ -94,7 +97,7 @@
           </div>
           <div>
             <dt>Live projects</dt>
-            <dd><a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a> · <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a></dd>
+            <dd><a href="https://keywulf.com/" rel="noopener noreferrer" target="_blank">Keywulf</a> · <a href="https://almostbear.uk/" rel="noopener noreferrer" target="_blank">AlmostBear</a> · <a href="https://operand.uk/" rel="noopener noreferrer" target="_blank">Operand</a></dd>
           </div>
         </dl>
       </aside>
@@ -108,6 +111,90 @@
           that rarely fit on a one-page resume.
         </p>
       </div>
+
+      <article class="project texture-grid" data-project="keywulf">
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">Daily news game · React / TypeScript · Cloudflare</p>
+              <h3>Keywulf</h3>
+            </div>
+            <a class="project-link" href="https://keywulf.com/" rel="noopener noreferrer" target="_blank">Play Keywulf <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="project-summary">
+            A two-minute typing game made from a fresh news briefing. Players share one
+            daily text, with article sources and publisher photos revealed as they type.
+            Progress and streaks stay in the browser, without an account.
+          </p>
+          <div class="project-grid">
+            <div>
+              <h4>Publication architecture</h4>
+              <p>
+                A grounded Gemini pipeline prepares and validates the news before release.
+                A Durable Object stores one immutable text per date; the Worker selects
+                the active game at 01:00 UTC without needing a daily app deployment.
+                Source metadata is cached separately and can be repaired without changing
+                the text players have already typed.
+              </p>
+            </div>
+            <div>
+              <h4>Reliability evidence</h4>
+              <p>
+                Tests simulate failed preparation, bounded late recovery, concurrent
+                generation, replayed triggers and the exact release boundary. A freshness
+                check verifies the public briefing independently. The recovery policy
+                requires fresh news, so an upstream outage can still delay release.
+              </p>
+              <p>
+                <a href="https://github.com/Aarreks/keywulf" rel="noopener noreferrer" target="_blank">Source code</a> ·
+                <a href="https://github.com/Aarreks/keywulf/blob/main/docs/RELIABILITY.md" rel="noopener noreferrer" target="_blank">Tests and recovery runbook</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="project texture-rings" data-project="agent-effi">
+        <div class="project-body">
+          <div class="project-title-row">
+            <div>
+              <p class="project-kicker">Local voice workflow · LiveKit · FastAPI / SQLite · Next.js</p>
+              <h3>EffiGov Voice Desk</h3>
+            </div>
+            <a class="project-link" href="https://github.com/Aarreks/agent-effi" rel="noopener noreferrer" target="_blank">View agent-effi <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="project-summary">
+            A municipal service-request demo: a resident can confirm multiple reports in
+            one voice call, retrieve a case and add a note. Staff review calls and change
+            case status in a separate dashboard. It runs locally with the reviewer's voice
+            credentials; it is not a deployed municipal service.
+          </p>
+          <div class="project-grid">
+            <div>
+              <h4>Controlled writes</h4>
+              <p>
+                The voice agent uses five fixed API tools. The backend owns transactions,
+                idempotent request creation and revision checks; staff control case status.
+                AI analysis stays separate from saved case data. WebSocket updates keep
+                the dashboard current, with polling recovery when the connection drops.
+              </p>
+            </div>
+            <div>
+              <h4>Evidence and limits</h4>
+              <p>
+                Backend tests exercise concurrent retries, conflicting requests,
+                persistence, access boundaries and analysis failures. API tests cannot
+                establish speech quality or tool selection: those require a live call.
+                Voice lookup by phone or case ID is a demo convenience, not identity verification.
+              </p>
+              <p>
+                <a href="https://github.com/Aarreks/agent-effi/tree/main/tests" rel="noopener noreferrer" target="_blank">Backend tests</a> ·
+                <a href="https://github.com/Aarreks/agent-effi/blob/main/DEMO.md" rel="noopener noreferrer" target="_blank">Demo and verification guide</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
 
       <article class="project project-featured texture-wave" data-project="semantic-security">
         <div class="project-body">
@@ -345,6 +432,16 @@
                 Each room has two players, one timer, shared state, and an invite link that
                 another person can actually open and use. The application is deployed on Fly.io.
               </p>
+            </div>
+            <div>
+              <h4>Room lifecycle evidence</h4>
+              <p>
+                Socket.IO integration tests use real clients to exercise room switching,
+                rejected joins and mid-game disconnects. An isolated load script measures
+                acknowledgement latency and server memory, and checks that abandoned
+                rooms and timers are removed after clients disconnect.
+              </p>
+              <p><a href="https://github.com/Aarreks/operand/blob/main/docs/VERIFICATION.md" rel="noopener noreferrer" target="_blank">Tests and local load measurements</a></p>
             </div>
           </div>
         </div>

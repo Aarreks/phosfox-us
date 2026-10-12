@@ -24,8 +24,11 @@ them once for wording you want to own. In particular:
 - AlmostBear names your deployment scope and labels broader application
   features as team work.
 - Operand is described as a Fly.io-hosted two-player arithmetic game.
+- Keywulf and EffiGov Voice Desk are featured with architecture and test evidence.
+  EffiGov is explicitly a local demo; API tests do not establish voice behavior.
+- See `VERIFICATION.md` for this update's review, publication and rollback steps.
 - Mandelbrot Explorer is intentionally omitted from this version.
-- No GitHub, LinkedIn, email address, or resume-PDF link is included because
+- No general GitHub-profile, LinkedIn, email address, or resume-PDF link is included because
   those URLs were not supplied. Add them only after setting their actual URLs.
 
 ## Password lab
